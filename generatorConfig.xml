@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+  <!-- 数据库驱动包位置 -->
+  <classPathEntry location="C:\Users\Administrator\Desktop\common_lib\mysql-connector-java-5.1.37-bin.jar"/>
+  <context id="DB2Tables" targetRuntime="MyBatis3">
+    <!-- 关闭注释 -->
+    <commentGenerator>
+        <property name="suppressDate" value="true"/>
+    </commentGenerator>
+    <!-- 数据库驱动连接配置信息 -->
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost:3306/office_cup" userId="root" password="yangrui" />
+    <!-- 生成model实体类的包名和位置 -->
+    <javaModelGenerator targetPackage="cc.rinoux.server.model" targetProject="service" />
+    <!-- xml映射文件的位置 -->
+    <sqlMapGenerator targetPackage="mapper" targetProject="service/src/main/resources" />
+    <!-- 生成的DAO类所在包名和位置 -->
+    <javaClientGenerator targetPackage="cc.rinoux.server.mapper" targetProject="service" type="XMLMAPPER" />
+    <!-- 用于生成实体和映射文件的表名。schema为数据库名 -->
+    <table schema="office_cup" tableName="user" 
+    enableCountByExample="false" 
+    enableUpdateByExample="false" 
+    enableDeleteByExample="false" 
+    enableSelectByExample="false" 
+    selectByExampleQueryId="false" >
+    <!--
+      <columnOverride column="???" property="???" />
+        -->
+    </table>
+  </context>
+</generatorConfiguration>
