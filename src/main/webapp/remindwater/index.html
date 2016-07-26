@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--针对移动设备,为了确保适当的绘制和触屏缩放，网站显示宽度等于设备屏幕显示宽度,内容缩放比例为1:1，禁用缩放功能-->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<!--将下面的 <meta> 标签加入到页面中，可以让部分国产浏览器默认采用高速模式渲染页面：-->
+<meta name="renderer" content="webkit">
+<title>【喝水提醒】mojimoji水杯</title>
+<!-- Bootstrap -->
+<link href="../Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!-- 通用---CSS-->
+<link href="../CommonCSSJS/common.css" rel="stylesheet">
+<!-- 通用---dialogBox-----CSS -->
+<link href="../CommonCSSJS/jquery.dialogbox.css" rel="stylesheet">
+<!-- 通用--loaders----------CSS -->
+<link href="../CommonCSSJS/loaders.css" rel="stylesheet">
+
+<!-- jQuery 必须 -->
+<script src="../Bootstrap/js/jquery-1.11.3.min.js"></script>
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+<!--内嵌式CSS代码-->
+<style type="text/css" >
+.bgmain {
+	background-image: url(image/bgmain.png);
+}
+.bgxiaomo {
+	background-image: url(image/bgxiaomo.png);
+}
+.bgmyself {
+	background-image: url(image/bgmyself.png);
+}
+.btnxiaomoremind {
+	background-image: url(image/moji.png);
+	top: 48%;
+}
+.btnmyselfremind {
+	background-image: url(image/myself.png);
+	top: 68%;
+}
+.btndrinktime {
+	background-image: url(image/btn.png);
+	top: 10%;
+}
+.btnsetremind {
+	background-image: url(image/btnset.png);
+}
+.topdivxiaomo {
+	width: 100%;
+	height: 20%;
+	margin: auto;
+}
+.topdivmyself {
+	width: 100%;
+	height: 15%;
+	margin: auto;
+}
+.showcanvasdivxiaomo {
+	width: 100%;
+	height: 45%;
+	margin: auto;
+}
+.showcanvasdivmyself {
+	width: 100%;
+	height: 33%;
+	margin: auto;
+}
+#chosetimediv {
+	width: 100%;
+	height: 35%;
+	margin: auto;
+	padding-top: 5%;
+	padding-bottom: 5%;
+	padding-left: 10%;
+	padding-right: 10%;
+	font-family: "SimHei";
+	color: rgb(254, 254, 254);
+	text-align: center;
+}
+.black {
+	position: relative;
+	width: 100%;
+	height: 20%;
+	top: 40%;
+	background-image: url(image/black.png);
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+ul {
+	width: 50%;
+	height: 100%;
+	margin: auto;
+	padding: 0px;
+	position: relative;
+	float: left;
+	top: -20%;
+	overflow: hidden;
+}
+ul li {
+	height: 20%;
+	list-style: none;
+	width: 100%;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	position: absolute;
+	font-size:120%;
+}
+ul li div {
+	width: 100%;
+	height: 100%;
+}
+</style>
+</head>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="../Bootstrap/js/jquery-1.11.3.min.js"></script>
+<body>
+<div class="bgall">
+  <div class="landscape">请竖屏使用</div>
+  <div class="portrait">
+    <div class="maindivsize"> 
+      <!--  喝水提醒主界面  --- 开始  -->
+      <div class="backgroundmain bgmain">
+        <div class="btnmain btnxiaomoremind"></div>
+        <div class="btnmain btnmyselfremind"></div>
+      </div>
+      <!--  喝水提醒主界面  --- 结束  --> 
+      
+      <!--  小墨提醒主界面  --- 开始  -->
+      <div class="backgroundmain bgxiaomo">
+        <div class="topdivxiaomo"></div>
+        <div class="showcanvasdivxiaomo">
+          <canvas id="xiaomocanvas"></canvas>
+        </div>
+        <div class="btnmain btndrinktime"></div>
+      </div>
+      <!--  小墨提醒主界面  --- 结束  --> 
+      
+      <!--  自主设定提醒主界面  --- 开始  -->
+      <div class="backgroundmain bgmyself">
+        <div class="topdivmyself"></div>
+        <div class="showcanvasdivmyself">
+          <canvas id="maincanvas"></canvas>
+        </div>
+        <div id="chosetimediv">
+          <div class="black"></div>
+          <ul id="chosehourul">
+            <script>
+				for(i=0;i<24;i++) {			
+					var documentwritetemp = '<li id="chosehourli' + i +'"><div id="chosehour' + i +'">' + i +'时</div></li>';			
+					document.write(documentwritetemp);		
+					$('#chosehourli' + i +'').css("line-height",$('#chosehourli' + i +'').height() + "px");
+				}
+		  </script>
+          </ul>
+          <ul id="choseminuul">
+            <script>
+				for(i=0;i<60;i++) {			
+					var documentwritetemp = '<li id="choseminuli' + i +'"><div id="choseminu' + i +'">' + i +'分</div></li>';			
+					document.write(documentwritetemp);
+					$('#choseminuli' + i +'').css("line-height",$('#choseminuli' + i +'').height() + "px");
+				}
+		  </script>
+          </ul>
+        </div>
+        <div class="btnmain btnsetremind"></div>
+      </div>
+      <!--  自主设定提醒主界面  --- 结束  --> 
+      
+    </div>
+  </div>
+</div>
+<div id="type-dialogBox"></div>
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="../Bootstrap/js/bootstrap.js"></script> 
+<!-- 引入screenlog日志输出的JS文件 --> 
+<script src="../Screenlog/screenlog.min.js"></script> 
+<!-- 初始化screenlog日志输出 --> 
+<script>
+//screenLog.init({
+//	color:"#000",/////字体颜色
+//	bgColor:"0",/////背景色
+//	releaseConsole:false
+//	});
+</script> 
+<!-- 通用---dialogBox----JS -->
+<script src="../CommonCSSJS/jquery.dialogBox.js"></script>
+<!-- 通用--JS-->
+<script src="../CommonCSSJS/common.js"></script>
+
+
+<script>
+<!-- 内嵌式JS代码 -->
+///////窗体就绪事件
+$(document).ready(function(e) {	
+
+	$(".backgroundmain.bgmain").show();
+	/////隐藏（小墨提醒，自主设定）界面，显示主界面
+	$(".backgroundmain.bgxiaomo").hide();
+	$(".backgroundmain.bgmyself").hide();
+	
+	$(".btnmain.btnxiaomoremind").click(function(){
+		//////显示小墨提醒界面
+		$(".backgroundmain.bgmain").hide();
+    	$(".backgroundmain.bgxiaomo").show();
+		$(".backgroundmain.bgmyself").hide();
+		/////开始小墨提醒动画
+		funxiaomoanimation();
+		
+  	});
+	$(".btnmain.btnmyselfremind").click(function(){
+		//////显示自主设定界面
+		$(".backgroundmain.bgmain").hide();
+    	$(".backgroundmain.bgxiaomo").hide();
+		$(".backgroundmain.bgmyself").show();
+		/////开始自主设定动画
+		funmyselfanimation();
+		///////绑定上下滑动动画
+		funbandingslide();
+  	});
+});
+</script> 
+<script>
+<!-- 内嵌式JS代码 -->
+var canvasdivwidth;////画布宽
+var canvasdivheight;////画布高
+var Main_canvas;/////画布
+var Canvas_cxt;/////画布2D
+</script> 
+<script>
+<!-- 内嵌式JS代码 -->
+var step;/////步数
+var startAngle;/////开始角度
+var endAngle;/////结束角度
+var add=Math.PI*2/100;
+var x;///中心横坐标
+var y;////中心纵坐标
+var radius;//////半径
+var animation_interval = 20;/////频率
+var n = 80;/////画圆百分比
+var varName;////计时器名称
+var Imageradius  =  new Image();//生成一个Imageradius对
+/////开始小墨提醒动画
+function funxiaomoanimation()
+{
+	canvasdivwidth = Math.floor($(".showcanvasdivxiaomo").width());////获取画布宽
+	canvasdivheight = Math.floor($(".showcanvasdivxiaomo").height());////获取画布高
+	Main_canvas = document.getElementById("xiaomocanvas");/////获取画布
+	Canvas_cxt = Main_canvas.getContext("2d");////获取canvas的2d	
+	Main_canvas.width = canvasdivwidth;////设置宽
+	Main_canvas.height = canvasdivheight;////设置高	
+	/////加在图片	
+	Imageradius.src = "image/radius.png";//Imageradius对象的src属性指图片url
+	Imageradius.onload = function(){//监听Imageradius的onload函数	
+		actiondo();//////开始动画
+		//console.log(Imageradius);
+	}
+	Imageradius.onerror = function(){//监听Imageradius的onerror函数
+		console.log("加载图片失败");
+	}	
+}
+//////开始动画
+function actiondo(){	 	 
+		step=1;////设置初始为1步
+		startAngle= - Math.PI * 0.5;	////设置起始角度----为12点钟方向
+		endAngle =  - Math.PI * 0.5;	////设置结束角度----为12点钟方向
+		Canvas_cxt.strokeStyle ="#05b9ff";//圆圈颜色------线
+		Canvas_cxt.fillStyle ="#05b9ff";//圆圈颜色-----点   
+		Canvas_cxt.shadowColor ="#000000"; // 设置阴影颜色        
+		
+		//圆心位置
+		x = canvasdivwidth / 2;
+		y = canvasdivheight / 2;
+		radius = Math.min(x,y) * 0.8; 		               
+		varName= setInterval(animation, animation_interval);
+}
+//////开始动画-----计时器
+ var animation = function () {  
+	 if (step <= n) {  
+		endAngle = endAngle + add ;		
+		drawArc(startAngle, endAngle); 
+		step++; 
+	 } else {  
+		 clearInterval(varName);  
+	 }  		 
+};
+//////开始动画-----绘制
+function drawArc(startAngle, endAngle) {
+	
+	////清除背景
+	Canvas_cxt.clearRect(0,0,canvasdivwidth,canvasdivheight);
+	
+	/////绘制边线----设置性质
+	Canvas_cxt.globalAlpha=1;   
+	Canvas_cxt.shadowBlur = 40; // 设置模糊度
+	Canvas_cxt.lineWidth = 10; 	////设置线条宽度	 
+	
+	/////绘制边线----绘制----线
+	Canvas_cxt.beginPath();   
+	Canvas_cxt.arc(x, y, radius, startAngle, endAngle, false);    
+	Canvas_cxt.stroke();
+	
+	/////绘制边线----绘制起点圆点
+	Canvas_cxt.shadowBlur = 0; // 设置模糊度----0
+	Canvas_cxt.beginPath();
+	Canvas_cxt.arc(x,y - radius,5,0,2*Math.PI);
+	Canvas_cxt.fill();  
+	Canvas_cxt.shadowBlur = 40; // 设置模糊度 ------恢复	
+	
+	/////绘制边线----绘制终点圆点
+	var endpoint = fungetEndpoint();/////获取终点
+	Canvas_cxt.shadowBlur = 0; // 设置模糊度----0
+	Canvas_cxt.beginPath();
+	Canvas_cxt.arc(endpoint.x,endpoint.y,5,0,2*Math.PI);
+	Canvas_cxt.fill();  
+	Canvas_cxt.shadowBlur = 40; // 设置模糊度 ------恢复
+	
+	//////绘制图片
+	Canvas_cxt.globalAlpha=0.6;   
+	Canvas_cxt.shadowBlur = 0; // 设置模糊度
+	Canvas_cxt.lineWidth = 0; 	////设置线条宽度	
+	
+	Canvas_cxt.drawImage(Imageradius,x - radius + 5,y - radius + 5,radius * 2 - 10 ,radius * 2 - 10);	
+} 
+/////获取终点
+function fungetEndpoint()
+{
+	var endpointx = x - radius*Math.sin(endAngle + startAngle)
+    var endpointy = y + radius*Math.cos(endAngle + startAngle)
+	return {x:endpointx,y:endpointy};		
+}
+</script> 
+<script>
+<!-- 内嵌式JS代码 -->
+var unitsize;//////画布单位大小
+var Imageradius  =  new Image();//生成一个Imageradius对象
+var canvasbgsign = new Array();
+var canvaswi = 21;
+var canvashj = 13;
+/////定义数字点阵集合
+var numList = new Array(
+"111111110000011111111",
+"100000111111110000001",
+"100111110010011111001",
+"100100110010011111111",
+"111100000010001111111",
+"111100110010011001111",
+"111111110010011001111",
+"100000010000001111111",
+"111111110010011111111",
+"111100110010011111111");
+/////开始自主设定动画
+var tHours;/////当前显示时间----------H
+var tMinutes;/////当前显示时间----------M
+		
+function funmyselfanimation(){
+	var widthtemp = Math.floor($(".showcanvasdivmyself").width());////获取画布宽
+	var heighttemp = Math.floor($(".showcanvasdivmyself").height());////获取画布高
+		
+	fungetwhfromdiv(widthtemp,heighttemp);/////根据div大小计算canvas大小
+	funsetcanvaslocaltion();//////设置canvas位置
+	funInitTimeArray();//////初始化时间画布数组		
+	
+	Main_canvas = document.getElementById("maincanvas");/////获取画布
+	Canvas_cxt = Main_canvas.getContext("2d");////获取canvas的2d	
+	Main_canvas.width = canvasdivwidth;////设置宽
+	Main_canvas.height = canvasdivheight;////设置高	
+	/////加在图片	
+	Imageradius.src = "image/block.png";//Imageradius对象的src属性指图片url
+	Imageradius.onload = function(){//监听Imageradius的onload函数
+	
+		var Today = new Date();
+		tHours = Today.getHours();
+		tMinutes = Today.getMinutes();	
+		funshowTimeselector();//////初始化时间选择器
+	}
+	Imageradius.onerror = function(){//监听Imageradius的onerror函数
+		console.log("加载图片失败");
+	}					
+}
+
+ /////根据div大小计算canvas大小
+function fungetwhfromdiv(widthtemp,heighttemp){
+	unitsize = Math.min(widthtemp / canvaswi,heighttemp / canvashj);		
+	//unitsize = Math.min(unitsize,15);	
+	canvasdivwidth = unitsize * canvaswi;
+	canvasdivheight = unitsize * canvashj;
+} 
+
+//////设置canvas位置
+function funsetcanvaslocaltion()
+{
+	var marginh = Math.floor(($(".showcanvasdivmyself").height() - canvasdivheight) * 0.5) + "px";
+	var marginw = Math.floor(($(".showcanvasdivmyself").width() - canvasdivwidth) * 0.5) + "px";
+	$("#maincanvas").css("margin-top",marginh);	
+	$("#maincanvas").css("margin-left",marginw);	
+	$("#maincanvas").css("margin-right",marginw);	
+	$("#maincanvas").css("margin-bottom",marginh);	
+}
+
+//////初始化时间画布数组	
+function funInitTimeArray()
+{
+	for(var i = 0; i < canvaswi; i++)
+	{
+		var canvasbgtemp = new Array();
+		for(var j = 0; j < canvashj; j++)
+		{	
+			var signtemp = 1;
+			///////灰点	
+			if(i+j <= 2)
+			{
+				////左上角
+				signtemp = 0;
+			}
+			else if(i<=2 && j>=canvashj-3)
+			{
+				////左下角
+				if(i == 0 || j == canvashj - 1 || (i == 1 && j == canvashj - 2))
+				{
+					signtemp = 0;
+				}
+			}
+			else if(i>=canvaswi-3 && j<=2)
+			{
+				////右上角				
+				if(j == 0 || i == canvaswi - 1 || j == 1 && i == canvaswi - 2)
+				{
+					signtemp = 0;
+				}
+			}
+			else if(i+j >= canvaswi+canvashj-4)
+			{
+				///右下角
+				if(j == canvashj - 1  || i == canvaswi - 1 || j == canvashj - 2  && i == canvaswi - 2)
+				{
+					signtemp = 0;
+				}
+			}
+			else
+			{
+				/////白点
+				signtemp = 1;
+			}
+			canvasbgtemp[j] = signtemp;
+		}	
+		canvasbgsign[i] = canvasbgtemp;
+	}
+}
+
+//////显示时间选择器	
+function funshowTimeselector()
+{
+	for(var i=0;i<24;i++)
+	{
+		var chosehourli = eval('chosehourli'+ i);
+		chosehourli.style.top = 40 + 20 * (i - tHours) + "%";
+		if(tHours < 2)
+		{
+			eval('chosehourli23').style.top = 40 - 20 * (tHours + 1) + "%";
+			eval('chosehourli22').style.top = 40 - 20 * (tHours + 2) + "%";
+			eval('chosehourli21').style.top = 40 - 20 * (tHours + 3) + "%";
+		}
+		else if(tHours > 21)
+		{
+			eval('chosehourli0').style.top = 40 + 20 * (24 - tHours + 0) + "%";
+			eval('chosehourli1').style.top = 40 + 20 * (24 - tHours + 1) + "%";
+			eval('chosehourli2').style.top = 40 + 20 * (24 - tHours + 2) + "%";
+		}
+	}
+	for(var i=0;i<60;i++)
+	{
+		var choseminuli = eval('choseminuli'+ i);
+		choseminuli.style.top = 40 + 20 * (i - tMinutes) + "%";
+		if(tMinutes < 2)
+		{
+			eval('choseminuli59').style.top = 40 - 20 * (tMinutes + 1) + "%";
+			eval('choseminuli58').style.top = 40 - 20 * (tMinutes + 2) + "%";
+			eval('choseminuli57').style.top = 40 - 20 * (tMinutes + 3) + "%";
+		}
+		else if(tMinutes > 57)
+		{
+			eval('choseminuli0').style.top = 40 + 20 * (60 - tMinutes + 0) + "%";
+			eval('choseminuli1').style.top = 40 + 20 * (60 - tMinutes + 1) + "%";
+			eval('choseminuli2').style.top = 40 + 20 * (60 - tMinutes + 2) + "%";
+		}
+	}
+	funInitTimeArray();//////初始化时间画布数组	
+	funchangetime(tHours,tMinutes);/////修改画布数组的时间
+	funshowTimeCanvas();/////在画布上画时间
+}
+
+/////修改画布数组的时间
+function funchangetime(tHours,tMinutes)
+{	
+	var numb1;/////第一位
+	var numb2;/////第二位
+	var numb3;/////第三位
+	var numb4;/////第四位	
+	if(tHours < 10)
+	{
+		numb1 = 0;
+		numb2 = tHours;		
+	}
+	else
+	{
+		numb1 = (tHours + "").substr(0,1);
+		numb2 = (tHours + "").substr(1,1);	
+	}
+	if(tMinutes < 10)
+	{
+		numb3 = 0;
+		numb4 = tMinutes;		
+	}
+	else
+	{
+		numb3 = (tMinutes + "").substr(0,1);
+		numb4 = (tMinutes + "").substr(1,1);	
+	}
+	///////第一位
+	var tt=0;	
+	for(var i = 0; i < 3; i++)
+	{
+		for(var j = 0; j < 7; j++)
+		{	
+			if(numList[numb1].substr(tt,1) == 1)
+			{
+				canvasbgsign[i + 2][j + 3] = 2;
+			}
+			tt++;
+		}
+	}
+	tt=0;
+		
+	/////////第二位
+	for(var i = 0; i < 3; i++)
+	{
+		for(var j = 0; j < 7; j++)
+		{	
+			if(numList[numb2].substr(tt,1) == 1)
+			{
+				canvasbgsign[i + 6][j + 3] = 2;
+			}
+			tt++;
+		}
+	}
+	tt=0;
+	
+	/////////第三位
+	for(var i = 0; i < 3; i++)
+	{
+		for(var j = 0; j < 7; j++)
+		{	
+			if(numList[numb3].substr(tt,1) == 1)
+			{
+				canvasbgsign[i + 12][j + 3] = 3;
+			}
+			tt++;
+		}
+	}
+	tt=0;
+	
+	/////////第四位
+	for(var i = 0; i < 3; i++)
+	{
+		for(var j = 0; j < 7; j++)
+		{	
+			if(numList[numb4].substr(tt,1) == 1)
+			{
+				canvasbgsign[i + 16][j + 3] = 3;
+			}
+			tt++;
+		}
+	}
+	
+	///////中间
+	canvasbgsign[(canvaswi - 1) * 0.5][(canvashj + 1) * 0.5 - 2] = 4;
+	canvasbgsign[(canvaswi - 1) * 0.5][(canvashj + 1) * 0.5] = 4;
+}
+
+/////在画布上画时间
+function funshowTimeCanvas()
+{
+	Canvas_cxt.clearRect(0,0,canvasdivwidth,canvasdivheight);
+	for(var i = 0; i < canvaswi; i++)
+	{
+		for(var j = 0; j < canvashj; j++)
+		{		
+			Canvas_cxt.drawImage(Imageradius, 72 * canvasbgsign[i][j],0,72,72,unitsize * i,unitsize * j,unitsize,unitsize);	
+		}
+	}
+	Canvas_cxt.strokeStyle="#672400";
+	Canvas_cxt.lineWidth=6;
+	Canvas_cxt.strokeRect(0,0,canvasdivwidth,canvasdivheight);
+}
+</script> 
+<script>
+<!-- 内嵌式JS代码 -->
+var initpointx;//////上下滑动初始坐标--X
+var initpointy;//////上下滑动初始坐标--y
+var endpointx;//////上下滑动结束坐标--X
+var endpointy;//////上下滑动结束坐标--y
+
+///////绑定上下滑动动画
+function funbandingslide(){
+	document.getElementById('chosehourul').addEventListener("touchstart", funhandleTouchstart, false);/////绑定chosetimeul的触摸开始事件
+	document.getElementById('chosehourul').addEventListener("touchend", funhandleTouchend, false);/////绑定chosetimeul的触摸结束事件
+	document.getElementById('chosehourul').addEventListener("touchmove", funhandleTouchmove, false);/////绑定chosetimeul的触摸移动事
+	document.getElementById('choseminuul').addEventListener("touchstart", funhandleTouchstart, false);/////绑定chosetimeul的触摸开始事件
+	document.getElementById('choseminuul').addEventListener("touchend", funhandleTouchend, false);/////绑定chosetimeul的触摸结束事件
+	document.getElementById('choseminuul').addEventListener("touchmove", funhandleTouchmove, false);/////绑定chosetimeul的触摸移动事
+}
+
+/////Main_Div的触摸开始事件
+function funhandleTouchstart(event) {
+	event.preventDefault(); //阻止滚动	
+	if (event.changedTouches.length == 1) {		
+		initpointx = event.changedTouches[0].clientX;
+		initpointy = event.changedTouches[0].clientY;
+	}
+}
+
+/////Main_Div的触摸移动事件
+function funhandleTouchmove(event) {
+//	event.preventDefault(); //阻止滚动	
+//	if (event.changedTouches.length == 1) {
+//		
+//		endpointx = event.changedTouches[0].clientX;
+//		endpointy = event.changedTouches[0].clientY;
+//		
+//		var hourorminu;//////选择时间还是分钟
+//		var upordown = 0;//////上滑还是下滑
+//		//////判断----选择时间还是分钟
+//		if(event.changedTouches[0].clientX <= $("body").width() * 0.5)
+//		{
+//			hourorminu = "hour";
+//		}
+//		else
+//		{
+//			hourorminu = "minu";
+//		}
+//		//////判断----上滑还是下滑
+//		if(endpointy >= initpointy)
+//		{
+//			upordown = 1;	
+//		}
+//		else if(endpointy <= initpointy)
+//		{
+//			upordown = -1;
+//		}   
+//		initpointx = event.changedTouches[0].clientX;
+//		initpointy = event.changedTouches[0].clientY;
+//		funchangeshowcanvas(hourorminu,upordown);/////时间显示切换
+//	}
+}
+
+/////Main_Div的触摸结束事件
+function funhandleTouchend(event) {
+	
+	event.preventDefault(); //阻止滚动		
+	if (event.changedTouches.length == 1) {
+		
+		endpointx = event.changedTouches[0].clientX;
+		endpointy = event.changedTouches[0].clientY;
+		
+		var hourorminu;//////选择时间还是分钟
+		var upordown = 0;//////上滑还是下滑
+		//////判断----选择时间还是分钟
+		if(event.changedTouches[0].clientX <= $("body").width() * 0.5)
+		{
+			hourorminu = "hour";
+		}
+		else
+		{
+			hourorminu = "minu";
+		}
+		//////判断----上滑还是下滑
+		if(endpointy >= initpointy)
+		{
+			upordown = 1;	
+		}
+		else if(endpointy <= initpointy)
+		{
+			upordown = -1;
+		}   
+		initpointx = event.changedTouches[0].clientX;
+		initpointy = event.changedTouches[0].clientY;
+		funchangeshowcanvas(hourorminu,upordown);/////时间显示切换
+	}
+
+}
+/////时间显示切换
+function funchangeshowcanvas(hourorminu,upordown)
+{
+	
+	if(hourorminu == "hour")
+	{
+		tHours -= upordown;
+	}
+	else
+	{
+		tMinutes -= upordown;
+	}
+	if(tHours < 0)
+	{
+		tHours = 23;
+	}
+	if(tHours >= 24)
+	{
+		tHours = 0;
+	}
+	if(tMinutes < 0)
+	{
+		tMinutes = 59;
+	}
+	if(tMinutes >= 60)
+	{
+		tMinutes = 0;
+	}
+	funshowTimeselector();//////初始化时间选择器
+}
+</script>
+</body>
+</html>

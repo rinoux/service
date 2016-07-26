@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--针对移动设备,为了确保适当的绘制和触屏缩放，网站显示宽度等于设备屏幕显示宽度,内容缩放比例为1:1，禁用缩放功能-->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<!--将下面的 <meta> 标签加入到页面中，可以让部分国产浏览器默认采用高速模式渲染页面：-->
+<meta name="renderer" content="webkit">
+<title>【画画板】mojimoji水杯</title>
+<!-- Bootstrap -->
+<link href="../Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!-- 通用---CSS-->
+<link href="../CommonCSSJS/common.css" rel="stylesheet">
+<!-- 通用---dialogBox-----CSS -->
+<link href="../CommonCSSJS/jquery.dialogbox.css" rel="stylesheet">
+<!-- 通用--loaders----------CSS -->
+<link href="../CommonCSSJS/loaders.css" rel="stylesheet">
+
+<!-- jQuery 必须 -->
+<script src="../Bootstrap/js/jquery-1.11.3.min.js"></script>
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+<!--内嵌式CSS代码-->
+<style type="text/css" >
+.draw {
+	background-image: url(image/bg.png);
+}
+.bgchose {
+}
+.topdiv {
+	width: 100%;
+	height: 6%;
+	margin: auto;
+	padding-left: 5%;
+	padding-right: 5%;
+}
+.topdivcancel {
+	width: 20%;
+	height: 100%;
+	float: left;
+	background-image: url(image/top1.png);
+	background-repeat: no-repeat;
+	background-size: 40% 40%;
+	background-position: left center;
+}
+.topdivundo {
+	width: 30%;
+	height: 100%;
+	float: left;
+	background-image: url(image/top2.png);
+	background-repeat: no-repeat;
+	background-size: 40% 40%;
+	background-position: right center;
+}
+.topdivRedo {
+	width: 30%;
+	height: 100%;
+	float: left;
+	background-image: url(image/top3.png);
+	background-repeat: no-repeat;
+	background-size: 40% 40%;
+	background-position: left center;
+}
+.topdivSave {
+	width: 20%;
+	height: 100%;
+	float: right;
+	background-image: url(image/top4.png);
+	background-repeat: no-repeat;
+	background-size: 40% 40%;
+	background-position: right center;
+}
+.showcanvasdiv {
+	width: 100%;
+	height: 80%;
+	margin: auto;
+}
+.chosediv {
+	width: 100%;
+	height: 14%;
+	margin: auto;
+	padding-top: 2%;
+	padding-bottom: 2%;
+	font-family: "SimHei";
+	color: rgb(254, 254, 254);
+	text-align: center;
+}
+.penpicdiv {
+	width: 50%;
+	height: 100%;
+	float: left;
+	background-image: url(image/chosebg.png);
+	background-repeat: no-repeat;
+	background-size: 200% 100%;
+}
+.pen {
+	background-position: left center;
+}
+.pic {
+	background-position: right center;
+}
+.chosedivpenandpic {
+	width: 100%;
+	height: 10%;
+	position: absolute;
+	bottom: 14%;
+	background-color: #555555;
+	padding-left: 2%;
+	padding-right: 2%;
+	border-radius: 5%;
+	overflow: scroll;
+	float: left;
+}
+.chosecolorsizerubber {
+	width: 16%;
+	height: 100%;
+	float: left;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: center center;
+}
+.rubber {
+	background-image: url(image/rubber.png);
+}
+.color {
+	background-image: url(image/colorbg.png);
+}
+.chosesizecolor {
+	width: 68%;
+	height: 100%;
+	float: left;
+}
+.choserubbersize {
+	width: 25%;
+	height: 100%;
+	float: left;
+	background-repeat: no-repeat;
+}
+.size1 {
+	background-size: 430% 100%;
+	background-image: url(image/penbg.png);
+	background-position: left center;
+}
+.size2 {
+	background-size: 430% 100%;
+	background-image: url(image/penbg.png);
+	background-position: 28% center;
+}
+.size3 {
+	background-size: 430% 100%;
+	background-image: url(image/penbg.png);
+	background-position: 66% center;
+}
+.size4 {
+	background-size: 430% 100%;
+	background-image: url(image/penbg.png);
+	background-position: right center;
+}
+.rubber1 {
+	background-size: 400% 100%;
+	background-image: url(image/rubberbg.png);
+	background-position: 110% center;
+}
+.rubber2 {
+	background-size: 400% 100%;
+	background-image: url(image/rubberbg.png);
+	background-position: 75% center;
+}
+.rubber3 {
+	background-size: 400% 100%;
+	background-image: url(image/rubberbg.png);
+	background-position: 36% center;
+}
+.rubber4 {
+	background-size: 400% 100%;
+	background-image: url(image/rubberbg.png);
+	background-position: left center;
+}
+.chosesizecolorclass {
+	width: 100%;
+	height: 100%;
+	overflow: scroll;
+	float: left;
+}
+.colordiv {
+	float: left;
+	height: 100%;
+	width: 30px;
+}
+.imglistclass {
+	float: left;
+	height: 100%;
+	background-position: center;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	border: 1px solid #F81317;
+}
+</style>
+</head>
+<body>
+<div class="bgall">
+  <div class="landscape">请竖屏使用</div>
+  <div class="portrait">
+    <div class="maindivsize"> 
+      <!--  画画板界面  --- 开始  -->
+      <div class="backgroundmain draw">
+        <div class="topdiv">
+          <div class="topdivcancel" onClick="funClear()"></div>
+          <div class="topdivundo" onClick="funUndo()"></div>
+          <div class="topdivRedo" onClick="funRedo()"></div>
+          <div class="topdivSave" onClick="funSave()"></div>
+        </div>
+        <div class="showcanvasdiv">
+          <canvas id="main_canvas"></canvas>
+        </div>
+        <div class="chosediv">
+          <div id="penandpicdiv" style="width:100%; height:100%;">
+            <div class="penpicdiv pen" onClick="funPen()"></div>
+            <div class="penpicdiv pic" onClick="funPic()"></div>
+          </div>
+          <div id="chosedivpen" class="chosedivpenandpic">
+            <div class="chosecolorsizerubber rubber" onClick="funRubber()"> </div>
+            <div class="chosesizecolor">
+              <div id="choserubbersizeid" class="chosesizecolorclass">
+                <div id="subcontainersize" style="width:100%; height:100%;">
+                  <div class="choserubbersize rubber1" onClick="funChangeRubberSize(2)"> </div>
+                  <div class="choserubbersize rubber2" onClick="funChangeRubberSize(4)"> </div>
+                  <div class="choserubbersize rubber3" onClick="funChangeRubberSize(6)"> </div>
+                  <div class="choserubbersize rubber4" onClick="funChangeRubberSize(8)"> </div>
+                </div>
+              </div>
+              <div id="chosesizeid" class="chosesizecolorclass">
+                <div id="subcontainersize" style="width:100%; height:100%;">
+                  <div class="choserubbersize size1" onClick="funChangeSize(2)"> </div>
+                  <div class="choserubbersize size2" onClick="funChangeSize(4)"> </div>
+                  <div class="choserubbersize size3" onClick="funChangeSize(6)"> </div>
+                  <div class="choserubbersize size4" onClick="funChangeSize(8)"> </div>
+                </div>
+              </div>
+              <div id="chosecolorid" class="chosesizecolorclass" style=" display:none;">
+                <div id="subcontainercolor" style="width:800%; height:100%;"> 
+                  <script>
+			var colorarray = ["f00","ff0","0f0","0ff","00f","f0f","fff","ebebeb","e1e1e1","d7d7d7","ccc","c2c2c2","b7b7b7","acacac","a0a0a0","959595","ee1d24","fff100","00a650","00aeef","2f3192","ed008c","898989","7d7d7d","707070","626262","555","464646","363636","262626","111","000","a286bd","bc8cbf"];
+			var gNum = colorarray.length;
+			$("#subcontainercolor").width(gNum * 30 + "px");
+			for(i=0;i<gNum;i++) {
+				var divid = "colordiv" + i;
+				var bgcolor = colorarray[i];	
+				var temp = '<div id="' + divid + '" class="colordiv" style=" background-color:#' + bgcolor + ';"  onClick="funChangeColor(this)"></div>';
+				document.write(temp);
+			}
+</script> 
+                </div>
+              </div>
+            </div>
+            <div class="chosecolorsizerubber color" onClick="funChangeSizeColor()"> </div>
+          </div>
+          <div id="chosedivpic" class="chosedivpenandpic">
+            <div id="subcontainerywz" style="height:100%;"> </div>
+          </div>
+        </div>
+      </div>
+      <!--  画画板界面  --- 结束  --> 
+      
+      <!--  选择好友界面  --- 开始  -->
+      <div class="backgroundmain bgchose">
+        <div class="topdivchose">
+          <div style="width: 100%; height: 50px; padding: 10px;">
+            <div style="float:left; width:20%; height:30px;">
+              <div class="searchimgdiv"></div>
+            </div>
+            <div style="float:left; width:40%; height:30px;">
+              <form>
+                <input type="text" class="form-control" placeholder="搜索" style="border:0;">
+              </form>
+            </div>
+            <div style="float:left; width:20%; height:30px; text-align:center; line-height:30px;">
+              <div id="chosedcountdiv">（ 0/5 ）</div>
+            </div>
+            <div onClick="funsendpictocup()" class="btnnextdiv"> </div>
+          </div>
+          <div style=" height:5px; width:100%; border-top: 2px solid #888888;"></div>
+          <div style=" height:20px; width:100%; background-color:#888888"></div>
+        </div>
+        <div id="friendListAllDiv" class="friendlistclass"> </div>
+      </div>
+      <!--  选择好友界面  --- 结束  -->
+    </div>
+  </div>
+</div>
+<div id="type-dialogBox"></div>
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="../Bootstrap/js/bootstrap.js"></script> 
+<!-- 引入screenlog日志输出的JS文件 --> 
+<script src="../Screenlog/screenlog.min.js"></script> 
+<!-- 初始化screenlog日志输出 --> 
+<script>
+//screenLog.init({
+//	color:"#000",/////字体颜色
+//	bgColor:"0",/////背景色
+//	releaseConsole:false
+//	});
+</script> 
+<!-- 通用---dialogBox----JS -->
+<script src="../CommonCSSJS/jquery.dialogBox.js"></script>
+<!-- 通用--JS-->
+<script src="../CommonCSSJS/common.js"></script>
+<script src="wwdzhhxjquery.js"></script> 
+</body>
+</html>

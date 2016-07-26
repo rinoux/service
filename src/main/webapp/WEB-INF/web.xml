@@ -5,33 +5,44 @@
          version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee">
          
    <display-name>Archetype Created Web Application</display-name>
-  
+  <!-- Spring applicationContext载入,启动web容器时自动装配ApplicationContext的配置信息
+  因为它实现了ServletContextListener这个接口，在web.xml配置这个监听器，启动容器时，就会默认执行
+  它实现的方法 -->
 	<listener>
 		<listener-class>
 			org.springframework.web.context.ContextLoaderListener
 		</listener-class>
 	</listener>
-	
+	<!-- socket连接监听 -->
+	<listener>
+        <listener-class>cc.rinoux.server.listener.ServerSocketListener</listener-class>
+    </listener>
+	<context-param>
+	    <param-name>webAppRootKey</param-name>
+	    <param-value>webapp.root</param-value>
+	</context-param>
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:spring.xml</param-value>
 	</context-param>
- 
+    <!-- 定义Jersey拦截器 -->
 	<servlet>
 		<servlet-name>jersey-serlvet</servlet-name>
 		<servlet-class>
 			org.glassfish.jersey.servlet.ServletContainer
 		</servlet-class>
+		<!-- 系统启动时扫描的包的路径 -->
 		<init-param>
 			<param-name>javax.ws.rs.Application</param-name>
-			<param-value>cc.rinoux.server.Application</param-value>			
-		</init-param>		
+			<param-value>cc.rinoux.server.application.Application</param-value>			
+		</init-param>	
 		<load-on-startup>1</load-on-startup>
 	</servlet>
  
 	<servlet-mapping>
 		<servlet-name>jersey-serlvet</servlet-name>
-		<url-pattern>/*</url-pattern>
+		<!-- url格式 -->
+		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
   
 </web-app>

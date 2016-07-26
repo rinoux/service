@@ -1,5 +1,5 @@
 <html>
 <body>
-<h2>Hello World!</h2>
+<h2>MojiMoji WebService Initial Success !</h2>
 </body>
 </html>

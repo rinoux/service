@@ -1,0 +1,591 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--针对移动设备,为了确保适当的绘制和触屏缩放，网站显示宽度等于设备屏幕显示宽度,内容缩放比例为1:1，禁用缩放功能-->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<!--将下面的 <meta> 标签加入到页面中，可以让部分国产浏览器默认采用高速模式渲染页面：-->
+<meta name="renderer" content="webkit">
+<title>【备忘录】mojimoji水杯</title>
+<!-- Bootstrap -->
+<link href="../Bootstrap/css/bootstrap.css" rel="stylesheet">
+<!-- 通用---CSS-->
+<link href="../CommonCSSJS/common.css" rel="stylesheet">
+<!-- 通用---dialogBox-----CSS -->
+<link href="../CommonCSSJS/jquery.dialogbox.css" rel="stylesheet">
+<!-- 通用--loaders----------CSS -->
+<link href="../CommonCSSJS/loaders.css" rel="stylesheet">
+
+<!-- jQuery 必须 -->
+<script src="../Bootstrap/js/jquery-1.11.3.min.js"></script>
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+<!--内嵌式CSS代码-->
+<style type="text/css" >
+.bgnote {
+	background-image: url(image/bg.png);
+}
+.bgchose {
+	display: none;
+}
+.topnote {
+	background-image: url(image/top.png);
+	background-size: 100% 100%;
+	height: 18%;
+}
+.topday {
+	float: left;
+	height: 100%;
+	background-image: url(image/quan.png);
+	background-size: 80% 80%;
+	background-repeat: no-repeat;
+	background-position: center center;
+	text-align: center;
+	font-size: 80px;
+	font-family: "Myriad Pro";
+	color: rgb(255, 255, 255);
+}
+.topyearmonth {
+	font-size: 41.667px;
+	font-family: "Myriad Pro";
+	color: rgb(255, 255, 255);
+	text-align: center;
+}
+.topmonth {
+	position: relative;
+	left: -12%;
+	font-size: 28px;
+}
+.topyear {
+	position: relative;
+	left: -12%;
+}
+.yeardiv {
+	height: 8%;
+	background-image: url(image/year.png);
+	background-size: 98% 93%;
+	background-repeat: no-repeat;
+	background-position: center center;
+	font-size: 32px;
+	font-family: "Myriad Pro";
+	color: rgb(255, 255, 255);
+	text-align: center;
+	vertical-align: middle;
+}
+.monthdiv {
+	height: 6%;
+	width: 100%;
+	margin: auto;
+	font-size: 28px;
+	font-family: "Myriad Pro";
+	color: rgb(255, 255, 255);
+	text-align: center;
+	vertical-align: middle;
+	padding: 1%;
+	border-bottom: 1px solid #FFFFFF;
+	padding-left: 8%;
+	padding-right: 8%;
+}
+.leftrightdiv {
+	width: 10%;
+	height: 100%;
+	background-size: 100% 100%;
+}
+.ledleft {
+	float: left;
+	background-image: url(image/left.png);
+}
+.ledright {
+	float: right;
+	background-image: url(image/right.png);
+}
+table {
+	width: 100%;
+	border: 0;
+	margin: auto;
+}
+table tr {
+	font-size: 18px;
+	font-family: 'Adobe Heiti Std';
+	color: rgb(255, 255, 255);
+	text-align: center;
+	vertical-align: middle;
+	height: 30px;
+}
+.memorandumdiv {
+	width: 100%;
+	height: 16%;
+	padding: 5%;
+	padding-left: 8%;
+	padding-right: 8%;
+}
+.btnsubmitnotes {
+	width: 50%;
+	height: 10%;
+	max-width: 200px;
+	max-height: 50px;
+	margin: auto;
+	background-size: 100% 100%;
+	position: relative;
+	background-image: url(image/btn.png);
+}
+</style>
+</head>
+<body>
+<div class="bgall">
+  <div class="landscape">请竖屏使用</div>
+  <div class="portrait">
+    <div class="maindivsize"> 
+      
+      <!--  备忘录界面  --- 开始  -->
+      <div class="backgroundmain bgnote">
+        <div class="topnote">
+          <div class="topday"></div>
+          <script>$(".topday").width($(".topday").height());
+          $('.topday').css("line-height",$('.topday').height() + "px");          
+          </script>
+          <div class="topyearmonth topmonth"></div>
+          <div class="topyearmonth topyear"></div>
+        </div>
+        <div class="yeardiv"></div>
+        <div class="monthdiv">
+          <div class="leftrightdiv ledleft" onClick="funlastmonth()"></div>
+          <span id="monthspan"></span>
+          <div class="leftrightdiv ledright" onClick="funnextmonth()"></div>
+        </div>
+        <div id="daydiv">
+          <table cellpadding="0" cellspacing="0">
+            <tr style="	border-bottom:1px solid #FFFFFF;">
+              <td>&nbsp;&nbsp;</td>
+              <td>日</td>
+              <td>一</td>
+              <td>二</td>
+              <td>三</td>
+              <td>四</td>
+              <td>五</td>
+              <td>六</td>
+              <td>&nbsp;&nbsp;</td>
+            </tr>
+            <script>
+		var gNum;
+		for(i=0;i<6;i++) {
+			if(i == 5)
+			{				
+				document.write('<tr align="center" style="border-bottom:1px solid #FFFFFF ;"><td></td>');
+			}
+			else
+			{
+				 document.write('<tr align="center"> <td></td>');
+			}		   
+		   for(j=0;j<7;j++) {
+			  gNum = i*7+j;
+			  document.write('<td id="YD' + gNum +'" onClick="funchoseday(this)"></td>');
+		   }
+		   document.write(' <td></td></tr>');
+		}
+   </script>
+          </table>
+        </div>
+        <div class="memorandumdiv">
+          <div style="width:100%; height:100%; margin:auto;">
+            <textarea id="notesdata" class="form-control" style="height:50%; resize:none;" readonly></textarea>
+            <textarea id="notescontent" class="form-control" placeholder="备忘录" style="height:50%; resize:none;"></textarea>
+          </div>
+        </div>
+        <div id="btncamera" class="btnsubmitnotes" onClick="funshowchosefriend()"></div>
+      </div>
+      <!--  备忘录界面  --- 结束  --> 
+      
+      <!--  选择好友界面  --- 开始  -->
+      <div class="backgroundmain bgchose">
+        <div class="topdivchose">
+          <div style="width: 100%; height: 50px; padding: 10px;">
+            <div style="float:left; width:20%; height:30px;">
+              <div class="searchimgdiv"></div>
+            </div>
+            <div style="float:left; width:40%; height:30px;">
+              <form>
+                <input type="text" class="form-control" placeholder="搜索" style="border:0;">
+              </form>
+            </div>
+            <div style="float:left; width:20%; height:30px; text-align:center; line-height:30px;">
+              <div id="chosedcountdiv">（ 0/5 ）</div>
+            </div>
+            <div onClick="funsendpictocup()" class="btnnextdiv"> </div>
+          </div>
+          <div style=" height:5px; width:100%; border-top: 2px solid #888888;"></div>
+          <div style=" height:20px; width:100%; background-color:#888888"></div>
+        </div>
+        <div id="friendListAllDiv" class="friendlistclass"> </div>
+      </div>
+      <!--  选择好友界面  --- 结束  --> 
+      
+    </div>
+  </div>
+</div>
+<div id="type-dialogBox"></div>
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="../Bootstrap/js/bootstrap.js"></script> 
+<!-- 引入screenlog日志输出的JS文件 --> 
+<script src="../Screenlog/screenlog.min.js"></script> 
+<!-- 初始化screenlog日志输出 --> 
+<script>
+//screenLog.init({
+//	color:"#000",/////字体颜色
+//	bgColor:"0",/////背景色
+//	releaseConsole:false
+//	});
+</script> 
+<!-- 通用---dialogBox----JS -->
+<script src="../CommonCSSJS/jquery.dialogBox.js"></script>
+<!-- 通用--JS-->
+<script src="../CommonCSSJS/common.js"></script>
+<!-- 引入日历的JS文件 --> 
+<script src="calendar.js"></script> 
+<script>
+<!-- 内嵌式JS代码 -->
+var tYear;
+var tMonth;
+var tDay;
+$(document).ready(function(e) {	
+
+/////获取今天日期
+	var Today = new Date();
+	tYear = Today.getFullYear();
+	tMonth = Today.getMonth() + 1;
+	tDay = Today.getDate();
+	
+	////显示备忘录
+	funshowcalendar(tYear,tMonth,tDay);
+
+});
+
+/////显示备忘录
+function funshowcalendar(tYear,tMonth,tDay){	
+	
+		/////显示顶部年月日
+	$(".topyear").html(tYear);
+	var moutharray = ["January","February","March","April","May","June","July","August","Sept","October","November","December"];
+	$(".topmonth").html(moutharray[tMonth - 1]);
+	$(".topday").html(tDay);		
+	
+	//////显示年
+	$(".yeardiv").html(tYear);
+	
+	/////显示月
+	monthspan.innerHTML = tMonth + " 月";	//月	
+	
+	/////显示日期
+	drawCld(tYear,tMonth - 1);	
+	
+	$("#notesdata").text(tYear + "/" + tMonth + "/" + tDay);
+	
+}
+</script> 
+<script>
+<!-- 内嵌式JS代码 -->
+/////上一月
+function funlastmonth(){	
+	var prevM = Date.getPrevMonth(tYear, tMonth);	
+	tYear = prevM.y;
+	tMonth = prevM.m;	
+	////显示备忘录
+	funshowcalendar(tYear,tMonth,tDay);	
+}
+/////下一月
+function funnextmonth(){	
+	var nextM = Date.getNextMonth(tYear, tMonth);
+	tYear = nextM.y;
+	tMonth = nextM.m;	
+	////显示备忘录
+	funshowcalendar(tYear,tMonth,tDay);	
+}
+
+Date.getSiblingsMonth = function(y, m, n) {
+	var d = new Date(y, m - 1);
+	d.setMonth(m - 1 + n);
+	return {
+		y: d.getFullYear(),
+		m: d.getMonth() + 1
+	};
+}
+
+Date.getPrevMonth = function(y, m, n) {
+	return this.getSiblingsMonth(y, m, 0 - (n || 1));
+}
+
+Date.getNextMonth = function(y, m, n) {
+	return this.getSiblingsMonth(y, m, n || 1);
+}
+</script> 
+<script>
+<!-- 内嵌式JS代码 -->
+
+function funchoseday(obj){		
+	
+	if(obj.innerText != "")
+	{
+		tDay = obj.innerText;
+		//console.log(tDay);
+		$("#notesdata").text(tYear + "/" + tMonth + "/" + tDay);
+		funshowcalendar(tYear,tMonth,tDay);	
+		
+	}	
+	else
+	{
+		//console.log("null");
+	}
+}
+
+</script> 
+<script>
+<!-- 内嵌式JS代码 -->
+var transcanvasdataurl;///转化之后数据
+var canvas_width = 320; ////画布宽
+var canvas_height = 480; ////画布高
+var Main_canvas; /////画布
+var canvas_cxt; /////画布2D
+var unitsize; //////画布单位大小
+var canvasw = 2;
+var canvash = 3;
+var unitsizeevery = 40; //////画布单位大小----
+//////界面转为画布
+function funlabeltocanvas()
+{
+	var transcanvas = document.createElement('canvas'); 
+	transcanvas.id = "canvasimage"; 
+	transcanvas.width = 320; 
+	transcanvas.height = 480; 			
+	transcanvas.style.display = "none"; 
+	document.body.appendChild(transcanvas);
+
+	Main_canvas = document.getElementById("canvasimage"); /////获取画布
+	canvas_cxt = Main_canvas.getContext("2d"); ////获取canvas的2d	
+	Main_canvas.width = canvas_width; ////设置宽
+	Main_canvas.height = canvas_height; ////设置高
+	canvas_cxt.fillStyle = "#000000"; ////背景色
+	canvas_cxt.fillRect(0, 0, canvas_width, canvas_height);
+
+	drawcamvas(tYear,tMonth,tDay,$("#notescontent").val());	
+	
+	transcanvasdataurl = Main_canvas.toDataURL("image.jpg");	
+}
+
+////////绘制万年历画布
+function drawcamvas(tY,tM,tD,notedata) {
+	
+	canvas_cxt.textAlign="center";
+	canvas_cxt.textBaseline="Alphabetic";
+	///////第一步---绘制顶部蓝色部分
+	canvas_cxt.fillStyle="#168DC5";
+	canvas_cxt.fillRect(0,0,canvas_width,canvas_height * 0.18);
+	
+
+	
+	//////第二步----绘制顶部年月日
+	canvas_cxt.textAlign="left";
+	canvas_cxt.textBaseline="Alphabetic";
+	/////绘制年
+	canvas_cxt.strokeStyle="#FFFFFF";
+	canvas_cxt.fillStyle="#FFFFFF";
+	canvas_cxt.font="32px Myriad Pro";	
+	canvas_cxt.fillText(tY,canvas_width * 0.3,canvas_height * 0.135);
+	/////绘制月
+	var moutharray = ["January","February","March","April","May","June","July","August","Sept","October","November","December"];
+	canvas_cxt.strokeStyle="#FFFFFF";
+	canvas_cxt.fillStyle="#FFFFFF";
+	canvas_cxt.font="20px Myriad Pro";	
+	canvas_cxt.fillText(moutharray[tM - 1],canvas_width * 0.3,canvas_height * 0.055);
+	/////绘制圆圈
+	canvas_cxt.lineWidth=3;
+	canvas_cxt.beginPath();
+	var r = Math.min(canvas_width * 0.15,canvas_height * 0.075)
+	canvas_cxt.arc(canvas_width * 0.15,canvas_height * 0.09,r,0,2*Math.PI);
+	canvas_cxt.stroke();
+	/////绘制日期	
+	canvas_cxt.textAlign="center";
+	canvas_cxt.textBaseline="Alphabetic";
+	canvas_cxt.lineWidth=2;	
+	canvas_cxt.strokeStyle="#FFFFFF";
+	canvas_cxt.fillStyle="#FFFFFF";
+	canvas_cxt.font="48px Myriad Pro";	
+	canvas_cxt.fillText(tD,canvas_width * 0.15,canvas_height * 0.09 + 12);
+	
+
+	//////第三------绘制年份
+	
+	var yearimg = new Image();
+	yearimg.src = "image/year.png";
+	yearimg.onload = function(){//监听LoadImage的onload函数
+		canvas_cxt.drawImage(yearimg,1,canvas_height * 0.19,canvas_width - 2,canvas_height * 0.08);	
+	}
+			
+	canvas_cxt.strokeStyle="#FFFFFF";
+	canvas_cxt.fillStyle="#FFFFFF";
+	canvas_cxt.font="32px Myriad Pro";	
+	canvas_cxt.fillText(tY,canvas_width * 0.5,canvas_height * 0.24);
+	
+	
+	//////第四------绘制月份	
+
+	canvas_cxt.strokeStyle="#FFFFFF";
+	canvas_cxt.fillStyle="#FFFFFF";
+	canvas_cxt.font="24px Myriad Pro";	
+	canvas_cxt.fillText(tM + "月",canvas_width * 0.5,canvas_height * 0.31);
+	
+
+	canvas_cxt.beginPath();
+	canvas_cxt.moveTo(0,canvas_height * 0.34);
+	canvas_cxt.lineTo(canvas_width,canvas_height * 0.34);
+	canvas_cxt.stroke();
+	
+	//////第五----绘制星期
+	canvas_cxt.strokeStyle="#FFFFFF";
+	canvas_cxt.fillStyle="#FFFFFF";
+	canvas_cxt.font="20px Myriad Pro";	
+	var weekarray = ["日","一","二","三","四","五","六"];
+	
+	for(var i = 0;i < 7;i++)
+	{
+		canvas_cxt.fillText(weekarray[i],unitsizeevery * (i+1),canvas_height * 0.38);
+	}
+	
+	canvas_cxt.beginPath();
+	canvas_cxt.moveTo(0,canvas_height * 0.39);
+	canvas_cxt.lineTo(canvas_width,canvas_height * 0.39);
+	canvas_cxt.stroke();
+	
+	
+	
+	
+	//////第六----绘制日期
+	canvas_cxt.strokeStyle="#FFFFFF";
+	canvas_cxt.fillStyle="#EEEEEE";
+	canvas_cxt.font="18px Myriad Pro";	
+	
+	/////获取当月日期集合
+	var cldnow = new calendar1(tY,tM);
+	/////获取当月第一天是星期几
+	var tMFristDayWeek = cldnow[0].week;
+	////当月总天数
+	var tMDayCount = cldnow.length;	
+	//////当前月的天
+	var tMDayNum;
+
+	for(var i = 0;i < 6;i++)
+	{		
+		for(var j = 0;j < 7;j++)
+		{
+			//////当前月的天			
+			var tMDayNum = i * 7 + j - tMFristDayWeek
+			if(tMDayNum > -1 && tMDayNum < tMDayCount) { //日期内			
+				canvas_cxt.fillText(tMDayNum + 1,unitsizeevery * (j+1),canvas_height * (0.43 +  i * 0.06));		
+			}
+		}
+	}
+	
+	canvas_cxt.strokeStyle="#FFFFFF";
+	canvas_cxt.fillStyle="#FFFFFF";
+	canvas_cxt.font="18px Myriad Pro";	
+	canvas_cxt.beginPath();
+	canvas_cxt.moveTo(0,canvas_height * 0.76);
+	canvas_cxt.lineTo(canvas_width,canvas_height * 0.76);
+	canvas_cxt.stroke();	
+	
+	
+	
+	//////第七-----绘制文本输入框	
+	drawRoundedRect("#000000",   "#FFFFFF",  canvas_width * 0.08,  canvas_height * 0.8,  canvas_width * 0.84,  canvas_height * 0.16, 18);
+	
+	//////第八------绘制备忘录信息
+	canvas_cxt.textAlign="left";
+	canvas_cxt.textBaseline="top";
+	canvas_cxt.strokeStyle="#FFFFFF";
+	canvas_cxt.fillStyle="#000000";
+	canvas_cxt.font="18px Myriad Pro";	
+	canvas_cxt.fillText(tYear + "/" + tMonth + "/" + tDay,canvas_width * 0.12,canvas_height * 0.83);
+	canvas_cxt.fillText(notedata,canvas_width * 0.12,canvas_height * 0.9);
+	
+}
+//
+/////这个就是画圆角矩形的方法了，其中cornerX,cornerY是矩形左上角坐标。
+function drawRoundedRect(strokeStyle,fillStyle,cornerX,cornerY,width,height,cornerRadius) {
+   canvas_cxt.beginPath();
+   roundedRect(cornerX, cornerY, width, height, cornerRadius);
+   canvas_cxt.strokeStyle = strokeStyle;
+   canvas_cxt.fillStyle = fillStyle;
+   canvas_cxt.stroke();
+   canvas_cxt.fill();
+}
+
+function roundedRect(cornerX, cornerY, width, height, cornerRadius) {
+   if (width> 0) canvas_cxt.moveTo(cornerX + cornerRadius, cornerY);
+   else  canvas_cxt.moveTo(cornerX - cornerRadius, cornerY);
+   canvas_cxt.arcTo(cornerX+width,cornerY,cornerX + width,cornerY+height,cornerRadius);
+   canvas_cxt.arcTo(cornerX+width,cornerY + height,cornerX,cornerY+height,cornerRadius);
+   canvas_cxt.arcTo(cornerX,cornerY+height,cornerX,cornerY,cornerRadius);
+   if(width> 0) {
+      canvas_cxt.arcTo(cornerX,cornerY,cornerX+cornerRadius,cornerY,cornerRadius);
+   }
+   else{
+     canvas_cxt.arcTo(cornerX,cornerY,cornerX-cornerRadius,cornerY,cornerRadius);
+   }
+}
+
+
+
+function calendar1(y,m) {
+   var sDObj;
+   sDObj = new Date(y,m - 1,1);	//当月第一天的日期  
+   this.length = solarDays1(y,m);    //公历当月天数 
+   this.firstWeek = sDObj.getDay();    //公历当月1日星期几
+   for(var i=0;i<this.length;i++) {
+      this[i] = new calElement1(y,m,i+1,(i+this.firstWeek)%7);
+   }
+}
+
+//记录公历和农历某天的日期
+function calElement1(sYear,sMonth,sDay,week) {
+
+      //公历
+      this.sYear = sYear;
+      this.sMonth = sMonth;
+      this.sDay = sDay;
+      this.week = week;
+}
+
+////返回公历y年m+1月的天数
+var solarMonth=new Array(31,28,31,30,31,30,31,31,30,31,30,31);
+function solarDays1(y,m){
+   if(m==2)
+      return(((y%4==0)&&(y%100!=0)||(y%400==0))?29:28);
+   else
+      return(solarMonth[m - 1]);
+}
+
+</script> 
+<script>
+<!-- 内嵌式JS代码 -->
+function funshowchosefriend()
+{
+	
+	/////转化	
+	//////界面转为画布
+	funlabeltocanvas();
+		
+	//$(".backgroundmain.bgnote").hide();
+	//$(".backgroundmain.bgchose").show();
+	//funshowchosefrirnd();//////进入好友选择界面----初始化
+	
+	funsendpictocup();////发送图片到水杯
+}
+</script>
+</body>
+</html>

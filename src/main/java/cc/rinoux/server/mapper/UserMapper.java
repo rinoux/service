@@ -1,5 +1,7 @@
 package cc.rinoux.server.mapper;
 
+import java.util.List;
+
 import cc.rinoux.server.model.User;
 
 public interface UserMapper {
@@ -9,4 +11,7 @@ public interface UserMapper {
     User selectByPrimaryKey(Integer uid);
     int updateByPrimaryKeySelective(User record);
     int updateByPrimaryKey(User record);
+    List<User> getUsers();
+    
+    String getUserNameById(Integer uid);
 }

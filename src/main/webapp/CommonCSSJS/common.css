@@ -1,0 +1,145 @@
+@charset "utf-8";
+/* CSS Document */
+body {
+	/*	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;*/
+	margin: 0;
+	padding: 0;
+}
+.bgall {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+@media all and (orientation : landscape) {
+/*横屏*/
+.landscape {
+	display: inherit;
+}
+.portrait {
+	display: none;
+}
+}
+
+@media all and (orientation : portrait) {
+/*竖屏*/
+.landscape {
+	display: none;
+}
+.portrait {
+	display: inherit;
+	width: 100%;
+	height: 100%;
+}
+}
+.maindivsize {
+	margin: auto;
+	width: 100%;
+	height: 100%;
+}
+.backgroundmain {
+	width: 100%;
+	height: 100%;
+	background-size: 100% 100%;
+	position: relative;
+}
+.btnmain {
+	width: 50%;
+	height: 10%;
+	max-width: 200px;
+	max-height: 50px;
+	margin: auto;
+	background-size: 100% 100%;
+	position: relative;
+}
+.topdivchose {
+	width: 100%;
+	height: 6%;
+	margin: auto;
+	padding-left: 5%;
+	padding-right: 5%;
+}
+.chosediv {
+	width: 100%;
+	height: 14%;
+	margin: auto;
+	padding-top: 2%;
+	padding-bottom: 2%;
+	font-family: "SimHei";
+	color: rgb(254, 254, 254);
+	text-align: center;
+}
+.listdivclass {
+	width: 100%;
+	height: 80px;
+	border-bottom: 2px solid #AAAAAA;
+}
+.listdivhead {
+	float: left;
+	width: 30%;
+	height: 80px;
+	padding: 10px;
+}
+.listheadimg {
+	border-radius: 50%;
+	width: 60px;
+	height: 60px;
+	margin: auto;
+	background-size: 100% 100%;
+	border: 1px groove #010102;
+}
+.listdivname {
+	float: left;
+	width: 55%;
+	height: 80px;
+	line-height: 80px;
+	padding-left: 10%;
+	font-size: 150%;
+	font-family: "SimHei";
+}
+.listdivchose {
+	float: left;
+	width: 15%;
+	height: 80px;
+	margin: auto;
+	background-position: center;
+	background-size: 20px 20px;
+	border-radius: 50%;
+	background-repeat: no-repeat;
+}
+.listdivchosed {
+	background-image: url(image/chosed.png);
+}
+.listdivnochose {
+	background-image: url(image/nochose.png);
+}
+.searchimgdiv {
+	background-size: 100% 100%;
+	width: 30px;
+	height: 30px;
+	margin: auto;
+	background-image: url(image/search.png);
+}
+.btnnextdiv {
+	float: left;
+	width: 20%;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	background-image: url(image/btnnext.png);
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+.friendlistclass {
+	position: absolute;
+	top: 75px;
+	overflow: auto;
+	width: 100%;
+	height: 100%;
+}
